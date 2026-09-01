@@ -1,0 +1,18 @@
+pymupdf4llm>=0.0.17
+semantic-text-splitter>=0.16.1
+lancedb>=0.15.0
+pyarrow>=16.0
+pandas>=2.2
+numpy>=1.26
+ollama>=0.3.3
+typer>=0.12.5
+pydantic>=2.8
+pydantic-settings>=2.4
+python-dotenv>=1.0
+rich>=13.7
+tqdm>=4.66
+mcp>=1.2,<2
+sentence-transformers>=5.4,<6
+
+# testing
+pytest>=8.0
