@@ -1,0 +1,8 @@
+lancedb>=0.15.0
+numpy>=1.26
+ollama>=0.3.3
+pydantic>=2.8
+pydantic-settings>=2.4
+python-dotenv>=1.0
+mcp>=1.2,<2
+sentence-transformers>=5.4,<6
