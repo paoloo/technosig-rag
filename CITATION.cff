@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If this software supports your research, please cite it using the metadata below."
+title: "Technosignature Literature RAG"
+type: software
+authors:
+  - given-names: "João Paolo"
+    family-names: "Cavalcante Martins Oliveira"
+    affiliation: "SETI Institute"
+    email: "paolocmo@gmail.com"
+    orcid: "https://orcid.org/0000-0003-4117-953X"
+repository-code: "https://github.com/paoloo/technosig-rag"
+url: "https://github.com/paoloo/technosig-rag"
+license: MIT
+date-released: 2026-09-01
+keywords:
+  - technosignatures
+  - SETI
+  - retrieval-augmented generation
+  - NASA ADS
+  - scientific literature
+abstract: >-
+  An experimental, evidence-first retrieval-augmented generation system for
+  exploring the NASA ADS technosignature literature.
