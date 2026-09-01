@@ -151,6 +151,18 @@ python scripts/mcp_smoke.py \
 
 When interpreting answers, remember that a metadata-only record is discoverable by title and bibliographic fields but does not contribute body text. An abstract-only record contributes its abstract, while a full-text record contributes parsed paper passages.
 
+## Citing this project
+
+If this software supports your research, please cite:
+
+> João Paolo Cavalcante Martins Oliveira. (2026). *Technosignature Literature RAG* [Computer software]. SETI Institute. https://github.com/paoloo/technosig-rag
+
+GitHub can also generate a citation in several formats from [CITATION.cff](CITATION.cff). The citation metadata includes the author's [ORCID record](https://orcid.org/0000-0003-4117-953X).
+
+## Contributing
+
+Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+
 ## License
 
 The project code is distributed under the terms in [LICENSE](LICENSE). Source papers and metadata remain subject to their original publishers' and NASA ADS terms.
