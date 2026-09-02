@@ -9,3 +9,4 @@ sentence-transformers>=5.4,<6
 pillow>=10
 transformers>=4.57
 qwen-vl-utils>=0.0.14
+pymupdf>=1.26

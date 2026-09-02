@@ -19,7 +19,9 @@ mcp-smoke:
 	ssh $(REMOTE) 'cd $(REMOTE_DIR) && .venv/bin/python scripts/mcp_smoke.py'
 
 server-deploy: deploy
-	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose up -d --build'
+	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose build'
+	ssh $(REMOTE) 'docker run --rm --user 0:0 -v /mnt/raid1/paolo_tests/tecnosig/visual:/visual tecnosig-rag-multimodal-mcp:local sh -c "mkdir -p /visual/pages /visual/metadata /visual/embeddings_cache /visual/lancedb && chown -R 1001:1001 /visual"'
+	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose up -d'
 
 server-status:
 	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose ps'
