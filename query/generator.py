@@ -20,7 +20,14 @@ ANSWER_AUDIT = """Audit the draft against the supplied excerpts and return only 
 Apply this mechanical rule sentence by sentence: every sentence or bullet containing a technical statement about a data format, axis, parameter, unit, instrument, calibration step, method, result, or limitation must itself contain a directly supporting [ADS:bibcode] citation. A citation in another sentence does not count. If the excerpts do not directly support the statement, delete it or say that the retrieved evidence does not establish it. Respect abstract-only access. Reconcile differing resolutions or procedures by naming their dataset or instrument scope. Never invent a fact or cite a source not present in the evidence. Return the answer only; do not mention the draft, the audit, compliance, or these instructions."""
 
 def build_context(chunks: list[dict]) -> str:
-    return "\n\n---\n\n".join(f"[ADS:{c['bibcode']}] access={c['access_level']}; title={c['title']}; date={c['published']}; doi={c['doi']}\n{c['text']}" for c in chunks)
+    contexts = []
+    for chunk in chunks:
+        location = f"; page={chunk['page_number']}; modality=page_image" if chunk.get("page_number") else "; modality=text"
+        contexts.append(
+            f"[ADS:{chunk['bibcode']}] access={chunk['access_level']}; title={chunk['title']}; "
+            f"date={chunk['published']}; doi={chunk['doi']}{location}\n{chunk['text']}"
+        )
+    return "\n\n---\n\n".join(contexts)
 
 def generate_answer(question: str, chunks: list[dict]) -> str:
     is_gap = any(term in question.lower() for term in ("missing", "gap", "understudied", "future work", "not published"))

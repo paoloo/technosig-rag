@@ -6,7 +6,8 @@ from query.reranker import rerank
 from storage.vector_store import get_table
 _RRF_K = 60
 
-def hybrid_search(query: str, k: int | None = None, facility: str | None = None, access_level: str | None = None) -> list[dict]:
+def hybrid_search(query: str, k: int | None = None, facility: str | None = None, access_level: str | None = None,
+                  rerank_results: bool = True) -> list[dict]:
     k = k or settings.top_k; table = get_table(); fetch_k = max(k*5, settings.rerank_fetch_limit)
     dense = table.search(embed_query(query), vector_column_name="vector").limit(fetch_k)
     lexical = table.search(query, query_type="fts").limit(fetch_k)
@@ -20,7 +21,7 @@ def hybrid_search(query: str, k: int | None = None, facility: str | None = None,
         for rank, row in enumerate(result_list):
             cid = row["chunk_id"]; scores[cid] = scores.get(cid, 0.0) + 1.0/(_RRF_K+rank+1); rows[cid] = row
     pool = [rows[cid] for cid in sorted(scores, key=scores.get, reverse=True)[:settings.rerank_pool_size]]
-    ranked = rerank(query, pool, min(len(pool), k*2)) if settings.rerank_enabled else pool
+    ranked = rerank(query, pool, min(len(pool), k*2)) if settings.rerank_enabled and rerank_results else pool
     output, per_paper = [], {}
     for row in ranked:
         count = per_paper.get(row["source_id"], 0)
