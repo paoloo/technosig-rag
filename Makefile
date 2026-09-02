@@ -1,5 +1,5 @@
 REMOTE ?= atadev
-REMOTE_DIR ?= /mnt/raid1/paolo_tests/tecnosig/code
+REMOTE_DIR ?= /mnt/raid1/paolo_tests/tecnosig/code-multimodal
 
 .PHONY: deploy test status process mcp-smoke server-deploy server-status server-logs server-down
 
@@ -25,7 +25,7 @@ server-status:
 	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose ps'
 
 server-logs:
-	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose logs --tail=200 tecnosig-mcp'
+	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose logs --tail=200 tecnosig-multimodal-mcp'
 
 server-down:
 	ssh $(REMOTE) 'cd $(REMOTE_DIR) && docker compose down'

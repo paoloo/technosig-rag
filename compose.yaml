@@ -1,13 +1,13 @@
 services:
-  tecnosig-mcp:
+  tecnosig-multimodal-mcp:
     build:
       context: .
       dockerfile: Dockerfile
-    image: tecnosig-rag-mcp:local
-    container_name: tecnosig-rag-mcp
+    image: tecnosig-rag-multimodal-mcp:local
+    container_name: tecnosig-rag-multimodal-mcp
     restart: unless-stopped
     ports:
-      - "10.10.1.161:8000:8000"
+      - "10.10.1.161:8001:8000"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -20,11 +20,23 @@ services:
       RERANK_BACKEND: cross-encoder
       RERANK_DEVICE: cuda
       RERANK_BATCH_SIZE: 8
+      VISUAL_ENABLED: "true"
+      VISUAL_EMBEDDING_MODEL: Qwen/Qwen3-VL-Embedding-2B
+      VISUAL_EMBEDDING_REVISION: 9f2f7e710d6d81056aa5c0a4f04764fec6bb7bda
+      VISUAL_RERANK_MODEL: Qwen/Qwen3-VL-Reranker-2B
+      VISUAL_RERANK_REVISION: 4bd860ac4f15ad1897a214615cccc700f8f71818
+      VISUAL_DEVICE: cuda
+      VISUAL_EMBEDDING_DIMENSIONS: 2048
+      VISUAL_EMBEDDING_BATCH_SIZE: 4
+      VISUAL_RERANK_BATCH_SIZE: 2
+      VISUAL_RENDER_DPI: 120
+      VISUAL_JPEG_QUALITY: 82
+      VISUAL_BASE_URL: http://10.10.1.161:8001
       HF_HOME: /models/huggingface
       MCP_TRANSPORT: streamable-http
       MCP_HOST: 0.0.0.0
       MCP_PORT: 8000
-      MCP_ALLOWED_HOSTS: 10.10.1.161:8000,localhost:8000,127.0.0.1:8000
+      MCP_ALLOWED_HOSTS: 10.10.1.161:8001,localhost:8000,127.0.0.1:8000
       MCP_ALLOWED_ORIGINS: ""
     volumes:
       - /mnt/raid1/paolo_tests/tecnosig/pdfs:/data/pdfs:ro
@@ -35,6 +47,7 @@ services:
       - /mnt/raid1/paolo_tests/tecnosig/lancedb:/data/lancedb:ro
       - /mnt/raid1/paolo_tests/tecnosig/eval:/data/eval:ro
       - /mnt/raid1/paolo_tests/tecnosig/research:/data/research:ro
+      - /mnt/raid1/paolo_tests/tecnosig/visual:/data/visual:ro
       - /mnt/raid1/paolo_tests/tecnosig/manifest.sqlite3:/data/manifest.sqlite3
       - /mnt/raid1/paolo_tests/tecnosig/model_cache:/models
     deploy:
