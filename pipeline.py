@@ -18,6 +18,25 @@ def process():
     for name, fn in (("parse",parse_pending),("extract",extract_pending),("chunk",chunk_pending),("embed",embed_pending),("store",store_pending),("index",build_indices)):
         typer.echo(f"=== {name} ==="); typer.echo(fn())
     export_corpus(Manifest(settings.manifest_path))
+@app.command(name="visual-extract")
+def visual_extract(limit: int|None=None, force: bool=False):
+    from visual.extractor import extract_visual_pages
+    typer.echo(extract_visual_pages(limit=limit, force=force))
+@app.command(name="visual-embed")
+def visual_embed(limit: int|None=None, force: bool=False):
+    from visual.embedder import embed_visual_pages
+    typer.echo(embed_visual_pages(limit=limit, force=force))
+@app.command(name="visual-store")
+def visual_store(force: bool=False):
+    from visual.store import store_visual_pages
+    typer.echo(store_visual_pages(force=force))
+@app.command(name="visual-index")
+def visual_index():
+    from visual.index import build_visual_indices
+    typer.echo(build_visual_indices())
+@app.command(name="visual-process")
+def visual_process(limit: int|None=None):
+    visual_extract(limit=limit); visual_embed(limit=limit); visual_store(); visual_index()
 @app.command(name="run-all")
 def run_all(metadata_only: bool=False, limit: int|None=None): fetch(metadata_only,limit); process()
 @app.command()

@@ -35,6 +35,21 @@ class Settings(BaseSettings):
     rerank_enabled: bool = True
     rerank_pool_size: int = 40
     rerank_fetch_limit: int = 200
+    visual_enabled: bool = True
+    visual_embedding_model: str = "Qwen/Qwen3-VL-Embedding-2B"
+    visual_embedding_revision: str = "9f2f7e710d6d81056aa5c0a4f04764fec6bb7bda"
+    visual_rerank_model: str = "Qwen/Qwen3-VL-Reranker-2B"
+    visual_rerank_revision: str = "4bd860ac4f15ad1897a214615cccc700f8f71818"
+    visual_device: str = "cuda"
+    visual_embedding_dimensions: int = 2048
+    visual_embedding_batch_size: int = 4
+    visual_rerank_batch_size: int = 2
+    visual_render_dpi: int = 120
+    visual_jpeg_quality: int = 82
+    visual_page_text_chars: int = 12000
+    visual_embedding_prompt: str = "Retrieve scientific paper pages relevant to the user's technosignature research question."
+    visual_rerank_prompt: str = "Retrieve scientific text or figures relevant to the user's technosignature research question."
+    visual_base_url: str = "http://127.0.0.1:8000"
     mcp_transport: Literal["stdio", "sse", "streamable-http"] = "stdio"
     mcp_host: str = "127.0.0.1"
     mcp_port: int = 8000
@@ -53,6 +68,14 @@ class Settings(BaseSettings):
     def embeddings_cache_dir(self) -> Path: return self.vector_data_dir / "embeddings_cache"
     @property
     def lancedb_dir(self) -> Path: return self.vector_data_dir / "lancedb"
+    @property
+    def visual_pages_dir(self) -> Path: return self.vector_data_dir / "visual" / "pages"
+    @property
+    def visual_metadata_dir(self) -> Path: return self.vector_data_dir / "visual" / "metadata"
+    @property
+    def visual_embeddings_cache_dir(self) -> Path: return self.vector_data_dir / "visual" / "embeddings_cache"
+    @property
+    def visual_lancedb_dir(self) -> Path: return self.vector_data_dir / "visual" / "lancedb"
     @property
     def eval_dir(self) -> Path: return self.vector_data_dir / "eval"
     @property
@@ -75,7 +98,9 @@ class Settings(BaseSettings):
     def ensure_dirs(self) -> None:
         for directory in (self.pdf_dir, self.metadata_dir, self.parsed_dir, self.chunks_dir,
                           self.embeddings_cache_dir, self.lancedb_dir, self.eval_dir,
-                          self.research_dir / "search"):
+                          self.research_dir / "search", self.visual_pages_dir,
+                          self.visual_metadata_dir, self.visual_embeddings_cache_dir,
+                          self.visual_lancedb_dir):
             directory.mkdir(parents=True, exist_ok=True)
 
 settings = Settings()
