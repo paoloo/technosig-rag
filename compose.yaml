@@ -47,7 +47,7 @@ services:
       - /mnt/raid1/paolo_tests/tecnosig/lancedb:/data/lancedb:ro
       - /mnt/raid1/paolo_tests/tecnosig/eval:/data/eval:ro
       - /mnt/raid1/paolo_tests/tecnosig/research:/data/research:ro
-      - /mnt/raid1/paolo_tests/tecnosig/visual:/data/visual:ro
+      - /mnt/raid1/paolo_tests/tecnosig/visual:/data/visual
       - /mnt/raid1/paolo_tests/tecnosig/manifest.sqlite3:/data/manifest.sqlite3
       - /mnt/raid1/paolo_tests/tecnosig/model_cache:/models
     deploy:
