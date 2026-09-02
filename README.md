@@ -44,9 +44,11 @@ The service on `dev-coyote1` uses three models, each for a different job:
 
 The multimodal branch adds `Qwen3-VL-Embedding-2B` for page-image retrieval and `Qwen3-VL-Reranker-2B` for joint text/image ranking. Their caches and vectors are independent from the text-only models. The answer generator still consumes extracted page text, so every returned page image should be inspected before relying on a visual-only detail.
 
+The deployed pilot covers 100 PDFs and 1,594 pages. On `dev-coyote1`, rendering took 111 seconds, visual embedding took 359 seconds, and storing/indexing took 11 seconds, all with zero errors. The page sidecar occupies about 405 MB and the two visual model caches add 8.0 GB on RAID. With both visual models resident, the visual MCP process uses 9,568 MiB of GPU memory and its container uses about 1.75 GiB of host RAM. One mixed 10-result query measured 22.7 seconds cold and 8.2 seconds warm; treat those as pilot observations, not a latency distribution.
+
 The dedicated reranker replaced the previous use of the 14B generative model for ranking. It reduces warm searches to roughly 0.3–0.9 seconds and avoids loading an approximately 18 GB generative runtime just to score passages. Its cache adds about 1.2 GB to the deployment, and it uses roughly 2.9 GB of GPU memory when loaded. The MCP image is currently about 6 GB because it includes PyTorch and CUDA support; the running container settles near 1.2 GB of system RAM after the reranker has loaded.
 
-The corpus and caches occupy about 4.7 GB outside the image. A GPU is not required for storage, indexing, or serving MCP itself, but it is strongly recommended for the reranker. Final answer generation still depends on a reachable Ollama inference service unless callers request evidence-only search results.
+The corpus and text caches occupy about 4.7 GB outside the text image. The multimodal pilot adds about 405 MB of page data, 8.0 GB of model caches, and about 0.98 GB to the container image. A GPU is not required for storage or basic MCP serving, but the VL models make CPU-only visual retrieval impractical for interactive use. Reserve at least 16 GB of VRAM for this configuration; 24 GB or more provides better concurrency headroom. Final answer generation still depends on a reachable Ollama inference service unless callers request evidence-only search results.
 
 ## Configure the environment
 
