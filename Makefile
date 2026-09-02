@@ -4,7 +4,7 @@ REMOTE_DIR ?= /mnt/raid1/paolo_tests/tecnosig/code-multimodal
 .PHONY: deploy test status process mcp-smoke server-deploy server-status server-logs server-down
 
 deploy:
-	rsync -az --delete --exclude=.git --exclude=.venv --exclude=.env --exclude=data --exclude=__pycache__ --exclude=.pytest_cache --exclude='*.pyc' ./ $(REMOTE):$(REMOTE_DIR)/
+	rsync -az --delete --exclude=.git --exclude=.venv --exclude=.env --exclude=HANDOFF.md --exclude=data --exclude=__pycache__ --exclude=.pytest_cache --exclude='*.pyc' ./ $(REMOTE):$(REMOTE_DIR)/
 
 test:
 	ssh $(REMOTE) 'cd $(REMOTE_DIR) && .venv/bin/python -m pytest tests/unit -q'
