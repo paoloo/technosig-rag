@@ -28,6 +28,19 @@ def test_visual_page_record_keeps_page_level_provenance(monkeypatch, tmp_path):
     assert page["text"] == "0123456789ab"
 
 
+def test_visual_pdf_path_falls_back_to_mounted_data(monkeypatch, tmp_path):
+    from config import settings
+    from visual.extractor import _resolve_pdf_path
+
+    pdf_dir = tmp_path / "pdfs"
+    pdf_dir.mkdir()
+    mounted = pdf_dir / "paper.pdf"
+    mounted.write_bytes(b"pdf")
+    monkeypatch.setattr(settings, "vector_data_dir", tmp_path)
+
+    assert _resolve_pdf_path("/institutional/host/paper.pdf") == mounted
+
+
 def test_visual_embedder_uses_shared_query_space(monkeypatch):
     import visual.embedder as embedder
 

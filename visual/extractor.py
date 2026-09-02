@@ -19,6 +19,15 @@ def _relative_image_path(stem: str, page_number: int) -> str:
     return f"visual/pages/{stem}/page-{page_number:04d}.jpg"
 
 
+def _resolve_pdf_path(stored_path: str) -> Path:
+    """Resolve host-absolute manifest paths inside containers or local copies."""
+    original = Path(stored_path)
+    if original.is_file():
+        return original
+    mounted = settings.pdf_dir / original.name
+    return mounted if mounted.is_file() else original
+
+
 def _page_record(record, page_number: int, image_path: str, text: str, width: int, height: int) -> dict:
     return {
         "visual_id": f"{record['source_id']}::page:{page_number}",
@@ -49,7 +58,7 @@ def render_paper(record, force: bool = False) -> int:
     if metadata_path.exists() and not force:
         return sum(1 for line in metadata_path.open() if line.strip())
 
-    pdf_path = Path(record["pdf_path"] or "")
+    pdf_path = _resolve_pdf_path(record["pdf_path"] or "")
     if not pdf_path.is_file():
         return 0
 
