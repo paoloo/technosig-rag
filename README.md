@@ -164,8 +164,8 @@ Then exercise the live MCP endpoint:
 
 ```bash
 python scripts/mcp_smoke.py \
-  --url http://10.10.1.161:8000/mcp \
-  --query "What observational signatures could reveal a Dyson sphere?"
+  --url http://10.10.1.161:8001/mcp \
+  --visual
 ```
 
 When interpreting answers, remember that a metadata-only record is discoverable by title and bibliographic fields but does not contribute body text. An abstract-only record contributes its abstract, while a full-text record contributes parsed paper passages.
