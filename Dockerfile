@@ -13,6 +13,10 @@ COPY requirements-server.txt ./
 RUN python -m pip install --upgrade pip \
     && python -m pip install -r requirements-server.txt
 
+# Sentence Transformers keeps vision support optional. Install its image extra
+# separately so ordinary dependency edits can reuse the large CUDA layer.
+RUN python -m pip install "sentence-transformers[image]>=5.4,<6"
+
 # PyTorch/Triton compiles a small GPU launcher when the Qwen reranker first
 # runs. Keep only the compiler required for that runtime compilation.
 RUN apt-get update \

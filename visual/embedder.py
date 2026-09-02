@@ -54,6 +54,7 @@ def embed_visual_pages(limit: int | None = None, force: bool = False) -> dict[st
     embedded_papers = 0
     embedded_pages = 0
     errors = 0
+    model = _model() if metadata_paths else None
     for metadata_path in metadata_paths:
         vectors_path = settings.visual_embeddings_cache_dir / f"{metadata_path.stem}.npy"
         ids_path = settings.visual_embeddings_cache_dir / f"{metadata_path.stem}.ids.json"
@@ -63,7 +64,7 @@ def embed_visual_pages(limit: int | None = None, force: bool = False) -> dict[st
             continue
         try:
             rows = _load_rows(metadata_path)
-            vectors = _model().encode(
+            vectors = model.encode(
                 [_document(row) for row in rows],
                 prompt=settings.visual_embedding_prompt,
                 batch_size=settings.visual_embedding_batch_size,
